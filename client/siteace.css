@@ -1,0 +1,70 @@
+/* CSS declarations go here */
+body {
+	font-family: 'Lato', sans-serif;
+	background-color: #F9F9F9;
+}
+.description {
+	font-family: 'Merriweather', serif;
+	margin-top:10px;
+}
+
+.hidden_div, .custom_div{
+	display:none;
+}
+.upvotes {
+	font-weight:700;
+	color: green;
+}
+.downvotes {
+	font-weight:700;
+	color: red;
+}
+.js-downvote {
+	margin-left:1em;
+}
+.createdOn{
+	opacity: 0.6;
+}
+#website_list , #search{
+	margin-top: 2em;
+}
+.website_item {
+	padding: 1em;
+	border: 1px solid #DEDEDE;
+}
+.count-results {
+	font-weight: 700;
+	font-size: 1.6em;
+	padding:1em;
+}
+.title {
+	font-weight:700;
+	font-size: 1.2em;
+}
+#login-dropdown-list{
+	list-style: none;
+	padding: 1em;
+	float:right;
+}
+.dropdown-toggle {
+	background-color: #ed8c72;
+	color: white;
+	padding: 10px;
+	font-weight: 700;
+}
+#basic-addon1 {
+	background-color: #ed8c72;
+	color: white;
+}
+.navbar {
+	background-color: #2f496e;
+	border-color: #2F496E;
+	padding: 0 26em 0 6em;
+}
+.navbar-brand {
+	color: #F9F9F9 !important;
+}
+.single {
+	padding: 1em;
+	border: 1px solid #DEDEDE;
+}

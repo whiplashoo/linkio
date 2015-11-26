@@ -1,0 +1,161 @@
+<head>
+	<title>Link.io</title>
+	<link href='https://fonts.googleapis.com/css?family=Lato:400,700|Merriweather' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+</body>
+
+<template name="ApplicationLayout">
+	{{> yield "navbar"}}
+	<div class="container">
+		{{> yield "form"}}
+		{{> yield "main"}}
+	</div>
+
+</template>
+
+<template name="navbar">
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">
+					Link.io
+				</a>
+			</div>
+			{{> loginButtons}}
+		</div>
+	</nav>
+</template>
+
+<template name="website_form">
+	{{#if currentUser}}
+	<div id="addNew">
+		<a class="btn btn-success js-toggle-website-form" href="#">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  ADD A NEW LINK
+		</a>
+	</div>
+	{{/if}}
+	<div id="website_form" class="hidden_div">
+		<form class="js-save-website-form">
+			<div class="form-group">
+				<label for="url">Site address</label>
+				<input type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+			</div>
+			<div class="form-group custom_div">
+				<label for="title">Title</label>
+				<input type="text" class="form-control" id="title" placeholder="Mysite">
+			</div>
+			<div class="form-group custom_div">
+				<label for="description">Description</label>
+				<input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
+			</div>
+			<div class="alert alert-danger custom_div" role="alert">Unable to extract title and description. <strong> Please add your own title and description for this website.</strong></div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
+	</div>
+</template>
+
+<!-- template that displays several website items -->
+<template name="website_list">
+	<div class="row">
+		<div class="col-md-8" id="website_list">
+			{{#EasySearch.IfInputEmpty index=WebsitesIndex }}
+			{{#each websites}}
+			{{>website_item}}
+			{{/each}}
+			{{else}}
+			{{#EasySearch.Each index=WebsitesIndex}}
+			{{> website_item}}
+			{{/EasySearch.Each}}
+			<div style="padding:1em">
+				{{> EasySearch.LoadMore index=WebsitesIndex content="More results..." attributes=loadMoreAttributes}}
+			</div>
+			{{/EasySearch.IfInputEmpty}}
+			
+		</div>
+		<div class="col-md-4" id="search">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon1"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+				{{> EasySearch.Input index=WebsitesIndex attributes=inputAttributes timeout=500 }}
+			</div>
+			{{#EasySearch.IfSearching index=WebsitesIndex}}
+			<div>Searching...</div>
+			{{/EasySearch.IfSearching}}
+			{{#EasySearch.IfInputEmpty index=WebsitesIndex }}
+			{{else}}
+			<div class="padded count-results">{{resultsCount}} found.</div>
+			{{/EasySearch.IfInputEmpty}}
+		</div>
+	</div>
+</template>
+
+<!-- template that displays individual website entries -->
+<template name="website_item">
+	<div class="row website_item">
+		<div class="col-md-3">
+			{{#if isUpvoted}}
+			<a href="#" class="btn btn-default btn-sm js-upvote" style="background-color:#89da59">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			</a>
+			{{else}}
+			<a href="#" class="btn btn-default btn-sm js-upvote">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			</a>
+			{{/if}}
+			<span class="upvotes"> {{upvotes}}</span>
+			{{#if isDownvoted}}
+			<a href="#" class="btn btn-default btn-sm js-downvote" style="background-color:#ff420e">
+				<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+			</a>
+			{{else}}
+			<a href="#" class="btn btn-default btn-sm js-downvote">
+				<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+			</a>
+			{{/if}}
+
+			<span class="downvotes"> {{downvotes}}</span>
+		</div>
+		<div class="col-md-9">
+			<a href="{{url}}" class="title">{{title}}</a>
+			<span class="createdOn"> added:  {{createdOn}}</span>
+			<p class="description">	{{description}}	</p>
+			<a href="/website/{{_id}}" class="btn btn-info js-details"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Details </a>
+		</div>	
+	</div>
+</template>
+
+<template name="single">
+	<div class="row single">
+		<a href="{{url}}" class="title">{{title}}</a>
+		<span class="createdOn"> added:  {{createdOn}}</span>
+		<p class="description">		{{description}}	</p>
+		{{#if isUpvoted}}
+		<a href="#" class="btn btn-default btn-sm js-upvote" style="background-color:#89da59">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		</a>
+		{{else}}
+		<a href="#" class="btn btn-default btn-sm js-upvote">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		</a>
+		{{/if}}
+		<span class="upvotes"> {{upvotes}}</span>
+		{{#if isDownvoted}}
+		<a href="#" class="btn btn-default btn-sm js-downvote" style="background-color:#ff420e">
+			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+		</a>
+		{{else}}
+		<a href="#" class="btn btn-default btn-sm js-downvote">
+			<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+		</a>
+		{{/if}}
+
+		<span class="downvotes"> {{downvotes}}</span>
+	</div>
+
+	<div class="comment-section row">
+		{{> commentsBox id=_id }}
+	</div>
+</template>
